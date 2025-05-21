@@ -56,5 +56,14 @@ btn.onclick = function() {
     iframe.style.display = chatOpen ? 'block' : 'none';
 };
 </script>
+
+<!-- Exemplo: dentro do <body> ou no final do arquivo cliente.html ou atendente.html -->
+<script>
+fetch('http://localhost:5000/chat', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({ message: 'Olá' })
+});
+</script>
 </body>
 </html>

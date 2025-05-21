@@ -1,16 +1,12 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
 from datetime import datetime
 
+from flask_cors import CORS
+
 app = Flask(__name__)
-
-# Estado em memória
-mensagens = []
-modo_atendente = False
-
-# Limpeza ao iniciar o servidor
-mensagens.clear()
-modo_atendente = False
-
+app.secret_key = 'sua_chave_secreta_aqui'  # Defina uma chave secreta forte
+CORS(app)
+CORS (app, resources={r"/api/*": {"origins": "http://localhost:80"}})
 # Pedidos simulados
 pedidos = {
     "1001": "Pedido 1001: Entregue ✅",
@@ -20,6 +16,8 @@ pedidos = {
 
 @app.route('/')
 def cliente():
+    session['modo_atendente'] = False
+    session['mensagens'] = []
     return render_template('cliente.html')
 
 @app.route('/atendente')
@@ -28,11 +26,12 @@ def atendente():
 
 @app.route('/mensagens')
 def listar_mensagens():
-    return jsonify(mensagens)
+    return jsonify(session.get('mensagens', []))
 
 @app.route('/enviar_cliente', methods=['POST'])
 def enviar_cliente():
-    global modo_atendente
+    modo_atendente = session.get('modo_atendente', False)
+    mensagens = session.get('mensagens', [])
     data = request.get_json()
     mensagem = data['mensagem'].strip()
     mensagens.append({'autor': 'cliente', 'mensagem': mensagem})
@@ -45,21 +44,30 @@ def enviar_cliente():
             mensagens.append({'autor': 'bot', 'mensagem': "Ou, caso deseje, acesse o link: https://wa.me/5511999999999"})
             modo_atendente = True
 
+    session['mensagens'] = mensagens
+    session['modo_atendente'] = modo_atendente
     return '', 204
 
 @app.route('/enviar_atendente', methods=['POST'])
 def enviar_atendente():
+    mensagens = session.get('mensagens', [])
     data = request.get_json()
     mensagem = data['mensagem'].strip()
     mensagens.append({'autor': 'atendente', 'mensagem': mensagem})
+    session['mensagens'] = mensagens
     return '', 204
 
 @app.route('/resetar')
 def resetar():
-    global mensagens, modo_atendente
-    mensagens.clear()
-    modo_atendente = False
+    session['mensagens'] = []
+    session['modo_atendente'] = False
     return "Chat e modo resetados."
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    data = request.get_json()
+    print(data['message'])  # Só para teste
+    return jsonify({'status': 'ok'})
 
 def gerar_resposta_chatbot(msg):
     msg = msg.lower()
@@ -98,4 +106,4 @@ def gerar_resposta_chatbot(msg):
 """
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=False)

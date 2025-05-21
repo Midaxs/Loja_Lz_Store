@@ -3,14 +3,16 @@ if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 include_once __DIR__ . '/../conexao.php'; // ajuste o caminho se necessário
 
 $isAdmin = false;
+$isAtendimento = false;
 if (isset($_SESSION['usuario_id'])) {
     $usuario_id = $_SESSION['usuario_id'];
     $stmt = $conn->prepare("SELECT adm FROM usuarios WHERE id = ?");
     $stmt->bind_param("i", $usuario_id);
     $stmt->execute();
     $stmt->bind_result($adm);
-    if ($stmt->fetch() && $adm === 'sim') {
-        $isAdmin = true;
+    if ($stmt->fetch()) {
+        if ($adm === 'sim') $isAdmin = true;
+        if ($adm === 'sim' || $adm === 'atm') $isAtendimento = true;
     }
     $stmt->close();
 }
@@ -42,6 +44,9 @@ if (isset($_SESSION['usuario_id'])) {
                                     </form>
                                     <?php if ($isAdmin): ?>
                                         <a href="config_prod.php" class="btn-config-prod">Configuração de produto</a>
+                                    <?php endif; ?>
+                                    <?php if ($isAtendimento): ?>
+                                        <a href="http://localhost:5000/atendente" class="btn-atendimento">Atendimento</a>
                                     <?php endif; ?>
                                 </div>
                             </div>
