@@ -387,3 +387,48 @@ body {
 .btn-config-prod:hover {
     background: #444;
 }
+.btn-atendimento {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 0;
+    background-color: #2d8cff;
+    color: #fff;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.btn-atendimento:hover {
+    background-color: #1761a0;
+    color: #fff;
+}
+
+/* Garante que o botão Atendimento fique estilizado mesmo sendo um <a> */
+.dropdown-logout .btn-atendimento,
+.usuario-dropdown .btn-atendimento {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 0;
+    background-color: #2d8cff;
+    color: #fff !important;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none !important;
+    font-weight: bold;
+    transition: background 0.2s;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.dropdown-logout .btn-atendimento:hover,
+.usuario-dropdown .btn-atendimento:hover {
+    background-color: #1761a0;
+    color: #fff !important;
+}

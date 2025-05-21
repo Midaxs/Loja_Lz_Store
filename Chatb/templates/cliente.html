@@ -184,5 +184,13 @@
     setInterval(carregarMensagens, 1500);
 </script>
 
+<script>
+fetch('http://localhost:5000/chat', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({ message: 'Olá' })
+});
+</script>
+
 </body>
 </html>

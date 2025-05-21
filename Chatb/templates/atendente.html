@@ -9,7 +9,7 @@
         #mensagem { width: 80%; }
         button { padding: 6px 10px; }
     </style>
-    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}"> -->
 
 </head>
 <body>
@@ -53,6 +53,14 @@
 
         setInterval(atualizarChat, 1000);
         atualizarChat();
+    </script>
+    <!-- Exemplo: dentro do <body> ou no final do arquivo cliente.html ou atendente.html -->
+    <script>
+    fetch('http://localhost:5000/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ message: 'Olá' })
+    });
     </script>
 </body>
 </html>
