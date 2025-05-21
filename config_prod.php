@@ -99,9 +99,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
             $id
         );
         if ($stmt->execute()) {
-            echo "<p style='color:green;'>Produto atualizado com sucesso!</p>";
+            $popupMsg = "Produto atualizado com sucesso!";
         } else {
-            echo "<p style='color:red;'>Erro ao atualizar produto: " . $stmt->error . "</p>";
+            $popupMsg = "Erro ao atualizar produto: " . $stmt->error;
         }
         $stmt->close();
     } else {
@@ -124,9 +124,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
             $categoria
         );
         if ($stmt->execute()) {
-            echo "<p style='color:green;'>Produto adicionado com sucesso!</p>";
+            $popupMsg = "Produto adicionado com sucesso!";
         } else {
-            echo "<p style='color:red;'>Erro ao adicionar produto: " . $stmt->error . "</p>";
+            $popupMsg = "Erro ao adicionar produto: " . $stmt->error;
         }
         $stmt->close();
     }
@@ -205,6 +205,13 @@ function adicionarVariacao() {
     container.appendChild(input);
     container.appendChild(document.createElement('br'));
 }
+
+window.onload = function() {
+    <?php if (!empty($popupMsg)): ?>
+        document.getElementById('popup-msg').innerText = <?= json_encode($popupMsg) ?>;
+        document.getElementById('popup-modal').style.display = 'flex';
+    <?php endif; ?>
+};
 </script>
 
 <!-- Lista de produtos para editar/apagar -->
@@ -241,6 +248,15 @@ function adicionarVariacao() {
             </tr>
         <?php endwhile; ?>
     </table>
+</div>
+
+<!-- Popup Modal -->
+<div id="popup-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.25);z-index:9999;align-items:center;justify-content:center;">
+    <div style="background:#fff;padding:32px 28px;border-radius:12px;box-shadow:0 2px 16px #0003;min-width:260px;max-width:90vw;text-align:center;position:relative;">
+        <span id="popup-msg"></span>
+        <br><br>
+        <button onclick="document.getElementById('popup-modal').style.display='none';" style="background:#ff3131;color:#fff;border:none;padding:8px 24px;border-radius:8px;font-weight:bold;cursor:pointer;">OK</button>
+    </div>
 </div>
 
 <link rel="stylesheet" href="config_prod.css">

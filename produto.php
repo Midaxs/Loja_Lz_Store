@@ -93,7 +93,18 @@ if ($id_produto > 0 && $usuario_id) {
     <div class="produto-info">
         <h1 class="produto-titulo"><?= htmlspecialchars($produto['nome']) ?></h1>
         <hr>
-        <div class="produto-status">Produto Disponível</div>
+        <div class="produto-status">
+            <?php if (isset($produto['quantidade']) && $produto['quantidade'] > 0): ?>
+                Produto Disponível
+            <?php else: ?>
+                <span style="color:#c00;">Produto esgotado</span>
+            <?php endif; ?>
+        </div>
+        <div class="produto-estoque" style="margin: 10px 0; color: #222; font-size: 16px;">
+            <?php if (isset($produto['quantidade']) && $produto['quantidade'] > 0): ?>
+                <b><?= $produto['quantidade'] ?></b> em estoque
+            <?php endif; ?>
+        </div>
         <hr>
         <div class="produto-precos">
             <div>
