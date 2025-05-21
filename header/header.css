@@ -1,0 +1,281 @@
+body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+    
+    header {
+        background-color: #000000;
+        color: white;
+    }
+    
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px 20px; 
+    }
+    
+    .logo {
+        background-image: url('../imagens/icones/logo_v2-sf.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100px; 
+    height: 100px; 
+    margin-left: 30px;
+    }
+    
+    
+    .top-links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 13px;
+        margin-right: 30px;
+        
+    }
+    .carrinho-wrapper {
+    margin-left: 15px;
+    }
+    
+    .top-links a {
+        color: white;
+        text-decoration: underline;
+        font-size: 14px;
+    }
+    
+    .cart {
+        color: black;
+        background-image: url('../imagens/icones/carrinho_fundo2.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 40px;
+        height: 40px;
+        margin-left: 0;          /* Remove o espaçamento à esquerda */
+    margin-right: 30px;         /* Remove o espaçamento à direita */
+        cursor: pointer;
+        position: relative;
+        
+    }
+
+    .botao-carrinho {
+        background-color: #ff3131;
+        border-radius: 10px;
+        padding: 3px 25px 3px 10px;
+        display: flex;           /* Torna o botão um flex container */
+        justify-content: flex-start; /* Alinha o conteúdo à esquerda */
+        align-items: center;
+        border: none;
+        cursor: pointer;
+    }
+    .l_carrinho{
+        color: black;
+        text-align: center;
+        font-weight: bold;
+
+    }
+    
+    nav ul {
+        list-style: none;
+        justify-content: space-around;
+        color: white;
+        text-decoration: none;
+          
+    }
+    
+    nav li {
+        cursor: pointer;
+        font-weight: bold;
+        text-decoration: none;
+        
+        
+    }
+
+    nav a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .minha-conta {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .minha-conta_img {
+        background-image: url('../imagens/icones/login_img40.png');
+    width: 40px;
+    height: 40px;
+    }
+
+    .texto {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .texto .linha1 {
+      font-size: 10px;
+    }
+
+    .texto .linha2 {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Barra de pesquisa no header */
+.search-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin: 0 30px 0 0;
+    max-width: 700px;
+}
+
+.search-bar input[type="text"] {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: none;
+    background: #555;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-bar input[type="text"]::placeholder {
+    color: #cccccc;
+}
+
+.search-bar button {
+    margin-left: 8px;
+    padding: 17px 17px;
+    border-radius: 10px;
+    border: none;
+    background: #ff3131;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    background-image: url("../imagens/icones/Arrow_Right_MD.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.categoria-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 15px 0 0 350px; /* Ajuste o margin-left conforme o alinhamento desejado */
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    width: fit-content;
+}
+
+.menu-icon {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background-image: url('../imagens/icones/menu_white.svg'); /* Use seu ícone de menu/hambúrguer */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Se não tiver SVG, pode usar CSS puro para o ícone: */
+.menu-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+.menu-icon::before,
+.menu-icon::after,
+.menu-icon span {
+    content: '';
+    display: block;
+    height: 4px;
+    background: #fff;
+    border-radius: 2px;
+}
+.menu-icon span {
+    width: 100%;
+}
+.menu-icon::before,
+.menu-icon::after {
+    width: 100%;
+}
+
+/* Esconde o menu por padrão */
+.menu-categorias-fechado {
+    display: none;
+}
+
+/* Mostra o menu quando aberto */
+.menu-categorias-aberto {
+    display: block;
+    background: #777;
+    color: #fff;
+    border-radius: 20px;
+    margin-top: 93px;
+    padding: 20px;
+    position: absolute;
+    left: 335px;
+    top: 110px; /* ajuste conforme seu layout */
+    z-index: 100;
+    min-width: 300px;
+}
+
+.menu-categorias-aberto ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.menu-categorias-aberto li {
+    margin-bottom: 15px;
+}
+
+.menu-categorias-aberto a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+.categoria-text{
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    
+}
+.sugestoes-busca {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 48px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 200;
+    padding: 8px 0;
+    display: none;
+}
+.sugestao-item {
+    color: #000000;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sugestao-item:hover {
+    background: #3a3f47;
+}
+.remover-sugestao {
+    color: #ccc;
+    margin-left: 12px;
+    cursor: pointer;
+    font-size: 18px;
+}

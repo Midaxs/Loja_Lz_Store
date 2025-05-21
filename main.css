@@ -1,0 +1,49 @@
+body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    .botao {
+        background: #ff3131;
+        color: #fff;
+        padding: 8px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        transition: background 0.2s;
+    }
+
+    .botao:hover {
+        background: #d81b1b;
+    }
+
+    #banner-carrossel {
+        max-width: 900px;
+        margin: 32px auto 40px auto;
+        position: relative;
+    }
+    .banner-slide {
+        width: 100%;
+        border-radius: 24px;
+        display: none;
+    }
+    .banner-slide:first-child {
+        display: block;
+    }
+    #banner-carrossel button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #fff8;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+        cursor: pointer;
+        z-index: 2;
+    }
+    #banner-prev { left: 16px; }
+    #banner-next { right: 16px; }
