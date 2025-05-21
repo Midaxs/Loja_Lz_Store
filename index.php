@@ -70,7 +70,7 @@ if (isset($_COOKIE['produtos_ja_olhados'])) {
             ?>
                 <div style="min-width:180px;max-width:200px;background:#fafbfc;border-radius:12px;padding:10px 8px 8px 8px;display:flex;flex-direction:column;align-items:center;">
                     <?php if (!empty($p['imagem1'])): ?>
-                        <img src="../../imagens/produtos/<?= htmlspecialchars($p['imagem1']) ?>" alt="<?= htmlspecialchars($p['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
+                        <img src="imgs/produtos/<?= htmlspecialchars($p['imagem1']) ?>" alt="<?= htmlspecialchars($p['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
                     <?php else: ?>
                         <div style="width:90%;height:80px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
                     <?php endif; ?>
@@ -115,7 +115,7 @@ if (isset($_COOKIE['produtos_ja_olhados'])) {
             ?>
                 <div style="min-width:180px;max-width:200px;background:#fafbfc;border-radius:12px;padding:10px 8px 8px 8px;display:flex;flex-direction:column;align-items:center;">
                     <?php if (!empty($sug['imagem1'])): ?>
-                        <img src="../../imagens/produtos/<?= htmlspecialchars($sug['imagem1']) ?>" alt="<?= htmlspecialchars($sug['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
+                        <img src="imgs/produtos/<?= htmlspecialchars($sug['imagem1']) ?>" alt="<?= htmlspecialchars($sug['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
                     <?php else: ?>
                         <div style="width:90%;height:80px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
                     <?php endif; ?>
@@ -141,7 +141,7 @@ if (isset($_COOKIE['produtos_ja_olhados'])) {
             ?>
                 <div style="min-width:180px;max-width:200px;background:#fafbfc;border-radius:12px;padding:10px 8px 8px 8px;display:flex;flex-direction:column;align-items:center;">
                     <?php if (!empty($u['imagem1'])): ?>
-                        <img src="../../imagens/produtos/<?= htmlspecialchars($u['imagem1']) ?>" alt="<?= htmlspecialchars($u['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
+                        <img src="imgs/produtos/<?= htmlspecialchars($u['imagem1']) ?>" alt="<?= htmlspecialchars($u['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
                     <?php else: ?>
                         <div style="width:90%;height:80px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
                     <?php endif; ?>
@@ -167,7 +167,7 @@ if (isset($_COOKIE['produtos_ja_olhados'])) {
         <?php while ($produto = $resultado->fetch_assoc()): ?>
             <div style="background:#fff;border-radius:28px;padding:24px 18px 18px 18px;box-shadow:0 2px 8px #0001;max-width:320px;min-width:260px;display:flex;flex-direction:column;align-items:center;">
                 <?php if (!empty($produto['imagem1'])): ?>
-                    <img src="../../imagens/produtos/<?= htmlspecialchars($produto['imagem1']) ?>" alt="<?= htmlspecialchars($produto['nome']) ?>" style="width:90%;max-width:260px;max-height:120px;object-fit:contain;border-radius:12px;background:#f5f5f5;">
+                    <img src="imgs/produtos/<?= htmlspecialchars($produto['imagem1']) ?>" alt="<?= htmlspecialchars($produto['nome']) ?>" style="width:90%;max-width:260px;max-height:120px;object-fit:contain;border-radius:12px;background:#f5f5f5;">
                 <?php else: ?>
                     <div style="width:90%;height:120px;background:#eee;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
                 <?php endif; ?>
@@ -189,6 +189,6 @@ if (isset($_COOKIE['produtos_ja_olhados'])) {
 <br>
 
 <?php include 'header/footer.php'; ?>
-<script src="header/header.js"></script>
+
 </body>
 </html>

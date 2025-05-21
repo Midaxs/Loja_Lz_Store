@@ -35,9 +35,9 @@ body {
         margin-right: 30px;
         
     }
-    .carrinho-wrapper {
+    /* .carrinho-wrapper {
     margin-left: 15px;
-    }
+    } */
     
     .top-links a {
         color: white;
@@ -130,6 +130,7 @@ body {
     align-items: center;
     margin: 0 30px 0 0;
     max-width: 700px;
+    position: relative;
 }
 
 .search-bar input[type="text"] {
@@ -161,16 +162,41 @@ body {
     background-size: contain;
 }
 
+/* Histórico de pesquisa */
+.search-suggestions {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 8px #0001;
+    width: 93.5%;
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 2000;
+    left: 0;
+    top: 100%;
+}
+.search-suggestions div {
+    padding: 8px 14px;
+    cursor: pointer;
+    color: #222;
+}
+.search-suggestions div:hover {
+    background: #f5f5f5;
+}
+
 .categoria-btn {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 15px 0 0 350px; /* Ajuste o margin-left conforme o alinhamento desejado */
+    margin: 0 0 15px 340px; /* Ajuste o margin-left conforme o alinhamento desejado */
     cursor: pointer;
     color: #fff;
     font-weight: bold;
     font-size: 16px;
     width: fit-content;
+    position: relative;
+    z-index: 101;
 }
 
 .menu-icon {
@@ -308,4 +334,56 @@ body {
     color: #111;
     text-decoration: none;
     font-weight: bold;
+}
+.linha2 {
+    position: relative;
+    cursor: pointer;
+}
+
+.usuario-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-logout {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    color: #111;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #0002;
+    padding: 5px 8px;
+    z-index: 9999;
+    min-width: 60px;
+}
+
+.btn-sair {
+    background: #000000;
+    color: #fff;
+    border: none;
+    padding: 0;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    
+}
+.btn-config-prod {
+    display: block;
+    margin-top: 10px;
+    background: #222;
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    width: 71%;
+    transition: background 0.2s;
+}
+.btn-config-prod:hover {
+    background: #444;
 }

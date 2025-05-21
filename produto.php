@@ -72,7 +72,7 @@ if ($id_produto > 0 && $usuario_id) {
             $imagens = [];
             for ($i = 1; $i <= 5; $i++) {
                 if (!empty($produto["imagem$i"])) {
-                    $imagens[] = "../../imagens/produtos/" . htmlspecialchars($produto["imagem$i"]);
+                    $imagens[] = "imgs/produtos/" . htmlspecialchars($produto["imagem$i"]);
                 }
             }
             foreach ($imagens as $idx => $img): ?>
@@ -188,7 +188,7 @@ if (!empty($produto['categoria'])) {
         <?php foreach ($sugestoes as $sug): ?>
             <div style="background:#fafbfc;border-radius:18px;padding:16px 12px 12px 12px;min-width:180px;max-width:200px;display:flex;flex-direction:column;align-items:center;">
                 <?php if (!empty($sug['imagem1'])): ?>
-                    <img src="../../imagens/produtos/<?= htmlspecialchars($sug['imagem1']) ?>" alt="<?= htmlspecialchars($sug['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:10px;background:#f5f5f5;">
+                    <img src="imgs/produtos/<?= htmlspecialchars($sug['imagem1']) ?>" alt="<?= htmlspecialchars($sug['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:10px;background:#f5f5f5;">
                 <?php else: ?>
                     <div style="width:90%;height:80px;background:#eee;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
                 <?php endif; ?>

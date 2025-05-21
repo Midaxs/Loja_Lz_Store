@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
             if ($files['error'][$i] === 0) {
                 $ext = pathinfo($files['name'][$i], PATHINFO_EXTENSION);
                 $nome_arquivo = uniqid() . '.' . $ext;
-                move_uploaded_file($files['tmp_name'][$i], '../../imagens/produtos/' . $nome_arquivo);
+                move_uploaded_file($files['tmp_name'][$i], 'imgs/produtos/' . $nome_arquivo);
                 $imagens[$i] = $nome_arquivo;
             } elseif (isset($_POST["imagem_existente_$i"])) {
                 $imagens[$i] = $_POST["imagem_existente_$i"];
