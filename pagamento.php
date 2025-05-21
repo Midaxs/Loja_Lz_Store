@@ -1,5 +1,20 @@
 <link rel="stylesheet" href="pagamento.css">
 <?php include 'header/header.php'; ?>
+<?php
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+if (isset($_POST['metodo'])) {
+    $_SESSION['forma_pagamento'] = $_POST['metodo'];
+    header('Location: revisao.php');
+    exit;
+}
+?>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo '<pre>'; print_r($_POST); echo '</pre>'; exit;
+}
+?>
 <div class="pagamento-container">
     <div class="pagamento-etapas">
         <span class="etapa concluida">✔ Carrinho</span>
@@ -9,7 +24,7 @@
         <span class="etapa">5 Revisar</span>
     </div>
     <div class="pagamento-main">
-        <form class="pagamento-form">
+        <form class="pagamento-form" method="POST" action="">
             <h2 class="pagamento-titulo"><span class="icon-pagamento">💳</span> MÉTODO DE PAGAMENTO</h2>
             <div class="pagamento-metodos">
                 <label class="pagamento-metodo pix ativo">

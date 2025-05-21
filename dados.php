@@ -1,43 +1,39 @@
 <?php
-include 'conexao.php'; // ajuste o caminho se necessário
+include 'conexao.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Pegue o ID do usuário logado (ajuste conforme seu sistema de login)
     $usuario_id = $_SESSION['usuario_id'] ?? null;
-    if ($usuario_id) {
-        // Cria um novo pedido
-        $stmt_pedido = $conn->prepare("INSERT INTO pedidos (usuario_id, criado_em) VALUES (?, NOW())");
-        $stmt_pedido->bind_param("i", $usuario_id);
-        $stmt_pedido->execute();
-        $pedido_id = $stmt_pedido->insert_id;
-        $stmt_pedido->close();
 
-        // Salva o endereço com o pedido_id
+    $campos_obrigatorios = ['nome', 'sobrenome', 'cep', 'endereco', 'numero', 'bairro', 'cidade', 'estado', 'telefone'];
+    $faltando = false;
+    foreach ($campos_obrigatorios as $campo) {
+        if (empty($_POST[$campo])) {
+            $faltando = true;
+        }
+    }
+
+    if ($usuario_id && !$faltando) {
+        $complemento = isset($_POST['complemento']) ? $_POST['complemento'] : '';
         $stmt = $conn->prepare("INSERT INTO enderecos 
-            (usuario_id, pedido_id, nome, sobrenome, cep, endereco, numero, bairro, complemento, cidade, estado, telefone) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            (usuario_id, nome, sobrenome, cep, endereco, numero, bairro, complemento, cidade, estado, telefone) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param(
-            "iissssssssss",
+            "issssssssss",
             $usuario_id,
-            $pedido_id,
             $_POST['nome'],
             $_POST['sobrenome'],
             $_POST['cep'],
             $_POST['endereco'],
             $_POST['numero'],
             $_POST['bairro'],
-            $_POST['complemento'],
+            $complemento,
             $_POST['cidade'],
             $_POST['estado'],
             $_POST['telefone']
         );
         $stmt->execute();
         $stmt->close();
-
-        // Você pode salvar o id do pedido na sessão para usar nas próximas etapas
-        $_SESSION['pedido_id'] = $pedido_id;
-
         header('Location: pagamento.php');
         exit;
     }

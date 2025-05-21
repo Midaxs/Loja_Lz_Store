@@ -1,0 +1,239 @@
+body {
+    background: #f6f7fa;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.revisao-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 12px;
+}
+.revisao-etapas {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 32px;
+    font-size: 1.1em;
+}
+.etapa {
+    color: #bbb;
+    font-weight: bold;
+    padding: 0 8px;
+    position: relative;
+}
+.etapa.ativa {
+    color: #ff2222;
+    border-bottom: 2px solid #ff2222;
+}
+.etapa.concluida {
+    color: #1db84a;
+}
+.revisao-titulo {
+    color: #ff2222;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.icon-revisao {
+    font-size: 1.6em;
+}
+.revisao-main {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.revisao-info {
+    flex: 2;
+    min-width: 340px;
+    max-width: 540px;
+}
+.info-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px #0001;
+    padding: 24px 24px 18px 24px;
+    margin-bottom: 24px;
+    border: 1.5px solid #ccc;
+}
+.info-bloco {
+    margin-bottom: 18px;
+}
+.info-icone {
+    color: #ff2222;
+    font-size: 1.2em;
+    margin-right: 6px;
+}
+.info-titulo {
+    font-weight: bold;
+    color: #ff2222;
+    margin-right: 8px;
+}
+.produto-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px #0001;
+    padding: 18px 18px 12px 18px;
+    margin-bottom: 18px;
+    border: 1.5px solid #ccc;
+}
+.produto-header,
+.produto-row-grid {
+    display: grid;
+    grid-template-columns: 2fr 0.7fr 1fr 0.5fr;
+    align-items: center;
+    text-align: left;
+}
+.produto-header {
+    font-weight: bold;
+}
+.produto-header span {
+    font-weight: bold;
+}
+.produto-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.produto-img-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #0001;
+    border: 1.5px solid #eee;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;   /* um pouco maior que a imagem */
+    height: 68px;
+}
+.produto-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+.produto-desc {
+    flex: 1;
+}
+.produto-preco-cartao {
+    color: #888;
+    font-size: 0.95em;
+    margin-top: 4px;
+}
+.produto-qtd {
+    min-width: 40px;
+    text-align: center;
+    font-weight: bold;
+}
+.produto-preco {
+    min-width: 90px;
+    text-align: left;
+    color: #27ae60;
+    font-weight: bold;
+}
+.produto-remove {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    outline: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.voltar-pagamento {
+    display: block;
+    color: #ff2222;
+    font-size: 1em;
+    margin-top: 18px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: left;
+}
+.revisao-resumo {
+    flex: 1;
+    min-width: 270px;
+    max-width: 320px;
+}
+.resumo-card {
+    background: #f6f7fa;
+    border-radius: 32px;
+    box-shadow: 0 2px 8px #0001;
+    padding: 24px 28px 18px 28px;
+    margin-bottom: 18px;
+    border: 1.5px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 320px;
+    max-width: 400px;
+}
+.resumo-titulo {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #222;
+    text-align: center;
+}
+.resumo-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1em;
+    color: #222;
+    margin-bottom: 10px;
+}
+.resumo-row.total {
+    font-size: 1.3em;
+    font-weight: bold;
+    background: #eaeaea;
+    border-radius: 8px;
+    padding: 8px 0;
+    margin-bottom: 18px;
+}
+.resumo-pagamento {
+    text-align: center;
+    margin-top: 12px;
+}
+.avista {
+    color: #009900;
+    font-size: 1.1em;
+    margin-bottom: 6px;
+}
+.preco-pix {
+    color: #1db84a;
+    font-size: 2em;
+    font-weight: bold;
+}
+.pix-desc {
+    color: #1db84a;
+    font-size: 1em;
+}
+.cartao {
+    color: #ff2222;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.cartao-desc {
+    color: #ff2222;
+    font-size: 1em;
+}
+.produto-img-nome {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.produto-qtd, .produto-preco {
+    justify-self: left;
+    text-align: left;
+    font-weight: bold;
+}
