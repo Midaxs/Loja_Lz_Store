@@ -1,0 +1,181 @@
+body {
+    background: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.dados-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 12px;
+}
+.dados-etapas {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 32px;
+    font-size: 1.1em;
+}
+.etapa {
+    color: #bbb;
+    font-weight: bold;
+    padding: 0 8px;
+    position: relative;
+}
+.etapa.ativa {
+    color: #ff3131;
+    border-bottom: 2px solid #ff3131;
+}
+.etapa.concluida {
+    color: #ff3131;
+}
+.dados-main {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center; /* Centraliza os cards na horizontal */
+}
+.dados-form {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px #0001;
+    padding: 32px 28px;
+    min-width: 340px;
+    max-width: 480px;
+    flex: 2;
+}
+.dados-titulo {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #222;
+}
+.icon-endereco {
+    font-size: 1.4em;
+    color: #ff3131;
+}
+.dados-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 18px;
+    margin-bottom: 22px;
+}
+.dados-grid input {
+    padding: 12px 16px;
+    border: 2px solid #000;
+    border-radius: 28px;
+    font-size: 15px;
+    outline: none;
+    background: #fff;
+    transition: border 0.2s;
+}
+.dados-grid input:focus {
+    border-color: #ff3131;
+}
+.dados-btn {
+    width: 100%;
+    padding: 14px 0;
+    background: #ff3131;
+    color: #fff;
+    border: none;
+    border-radius: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+.dados-btn:hover {
+    background: #d81b1b;
+}
+.dados-resumo {
+    flex: 1;
+    min-width: 270px;
+    max-width: 320px;
+}
+.resumo-card {
+    background: #fafbfc;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px #0001;
+    padding: 22px 18px 18px 18px;
+    margin-bottom: 18px;
+}
+.resumo-titulo {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #222;
+    text-align: center;
+}
+.resumo-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+    margin-bottom: 6px;
+}
+.resumo-row.total {
+    font-weight: bold;
+    font-size: 1.1em;
+    background: #eee;
+    border-radius: 8px;
+    padding: 4px 0;
+}
+.resumo-pagamento {
+    margin-top: 16px;
+    text-align: center;
+}
+.avista {
+    color: #009900;
+    font-size: 1.1em;
+    margin-bottom: 6px;
+}
+.preco-pix {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #009900;
+}
+.pix-desc {
+    font-size: 0.95em;
+    color: #009900;
+}
+.cartao {
+    color: #d22;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+.cartao-desc {
+    font-size: 0.95em;
+    color: #d22;
+}
+.voltar-carrinho {
+    display: block;
+    color: #ff3131;
+    font-size: 1em;
+    margin-top: 18px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+}
+.voltar-carrinho:hover {
+    text-decoration: underline;
+}
+@media (max-width: 900px) {
+    .dados-main {
+        flex-direction: column;
+        gap: 24px;
+        align-items: center; /* Centraliza no mobile também */
+        justify-content: center;
+    }
+    .dados-form, .dados-resumo {
+        max-width: 100%;
+        min-width: unset;
+    }
+    .dados-form {
+        padding: 18px 8px;
+    }
+}

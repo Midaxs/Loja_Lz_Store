@@ -62,6 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
     $variacoes = isset($_POST['variacoes']) ? $_POST['variacoes'] : [];
     $variacoes_json = json_encode($variacoes);
 
+    // ADICIONE ESTA PARTE:
+    $peso = $_POST['peso'];
+    $comprimento = $_POST['comprimento'];
+    $altura = $_POST['altura'];
+    $largura = $_POST['largura'];
+    $cep_origem = $_POST['cep_origem'];
+
     // Salvar imagens
     $imagens = [null, null, null, null, null];
     if (isset($_FILES['imagens'])) {
@@ -85,10 +92,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
     if (!empty($_POST['produto_id'])) {
         // Atualizar produto existente
         $id = intval($_POST['produto_id']);
-        $sql = "UPDATE produtos SET nome=?, preco=?, quantidade=?, variacoes=?, descricao=?, imagem1=?, imagem2=?, imagem3=?, imagem4=?, imagem5=?, categorias=? WHERE id=?";
+        $sql = "UPDATE produtos SET nome=?, preco=?, quantidade=?, variacoes=?, descricao=?, imagem1=?, imagem2=?, imagem3=?, imagem4=?, imagem5=?, categorias=?, peso=?, comprimento=?, altura=?, largura=?, cep_origem=? WHERE id=?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "sdissssssssi",
+            "sdissssssssddddsi",
             $nome,
             $preco,
             $quantidade,
@@ -100,6 +107,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
             $imagens[3],
             $imagens[4],
             $categorias_json,
+            $peso,
+            $comprimento,
+            $altura,
+            $largura,
+            $cep_origem,
             $id
         );
         if ($stmt->execute()) {
@@ -110,11 +122,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
         $stmt->close();
     } else {
         // Novo produto
-        $sql = "INSERT INTO produtos (nome, preco, quantidade, variacoes, descricao, imagem1, imagem2, imagem3, imagem4, imagem5, categorias)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO produtos (nome, preco, quantidade, variacoes, descricao, imagem1, imagem2, imagem3, imagem4, imagem5, categorias, peso, comprimento, altura, largura, cep_origem)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "sdissssssss",
+            "sdissssssssdddds",
             $nome,
             $preco,
             $quantidade,
@@ -125,7 +137,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
             $imagens[2],
             $imagens[3],
             $imagens[4],
-            $categorias_json
+            $categorias_json,
+            $peso,
+            $comprimento,
+            $altura,
+            $largura,
+            $cep_origem
         );
         if ($stmt->execute()) {
             $popupMsg = "Produto adicionado com sucesso!";
@@ -159,6 +176,21 @@ $resProdutos = $conn->query("SELECT * FROM produtos ORDER BY id DESC");
 
         <label>Quantidade:</label><br>
         <input type="number" name="quantidade" min="0" required value="<?= htmlspecialchars($produtoEdit['quantidade'] ?? '') ?>"><br><br>
+
+        <label>Peso (kg):</label><br>
+        <input type="number" name="peso" step="0.01" min="0" required value="<?= htmlspecialchars($produtoEdit['peso'] ?? '') ?>"><br><br>
+
+        <label>Comprimento (cm):</label><br>
+        <input type="number" name="comprimento" step="0.1" min="0" required value="<?= htmlspecialchars($produtoEdit['comprimento'] ?? '') ?>"><br><br>
+
+        <label>Altura (cm):</label><br>
+        <input type="number" name="altura" step="0.1" min="0" required value="<?= htmlspecialchars($produtoEdit['altura'] ?? '') ?>"><br><br>
+
+        <label>Largura (cm):</label><br>
+        <input type="number" name="largura" step="0.1" min="0" required value="<?= htmlspecialchars($produtoEdit['largura'] ?? '') ?>"><br><br>
+
+        <label>CEP de Origem:</label><br>
+        <input type="text" name="cep_origem" maxlength="9" required value="<?= htmlspecialchars($produtoEdit['cep_origem'] ?? '') ?>"><br><br>
 
         <label>Imagens (até 5):</label><br>
         <?php for ($i = 0; $i < 5; $i++): ?>
@@ -239,6 +271,11 @@ window.onload = function() {
             <th>Categoria</th>
             <th>Preço</th>
             <th>Qtd</th>
+            <th>Peso (kg)</th>
+            <th>Comp. (cm)</th>
+            <th>Altura (cm)</th>
+            <th>Largura (cm)</th>
+            <th>CEP Origem</th>
             <th>Imagens</th>
             <th>Ações</th>
         </tr>
@@ -261,6 +298,11 @@ window.onload = function() {
                 </td>
                 <td>R$ <?= number_format($p['preco'], 2, ',', '.') ?></td>
                 <td><?= $p['quantidade'] ?></td>
+                <td><?= htmlspecialchars($p['peso']) ?></td>
+                <td><?= htmlspecialchars($p['comprimento']) ?></td>
+                <td><?= htmlspecialchars($p['altura']) ?></td>
+                <td><?= htmlspecialchars($p['largura']) ?></td>
+                <td><?= htmlspecialchars($p['cep_origem']) ?></td>
                 <td>
                     <?php for ($i = 1; $i <= 5; $i++): ?>
                         <?php if (!empty($p["imagem$i"])): ?>

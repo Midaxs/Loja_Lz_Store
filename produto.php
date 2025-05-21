@@ -245,6 +245,8 @@ function alterarQtd(delta) {
 }
 </script>
 <script>
+var produtoId = <?= (int)$produto['id'] ?>; // Pega o ID do produto atual
+
 function calcularFrete() {
     var cep = document.getElementById('cep-frete').value.replace(/\D/g, '');
     var resultado = document.getElementById('resultado-frete');
@@ -253,7 +255,7 @@ function calcularFrete() {
         return;
     }
     resultado.innerHTML = "Calculando...";
-    fetch('calcula_frete.php?cep=' + cep)
+    fetch('calcula_frete.php?cep=' + cep + '&produto_id=' + produtoId)
         .then(r => r.json())
         .then(data => {
             if (data.frete) {
@@ -267,12 +269,10 @@ function calcularFrete() {
         });
 }
 
+// Máscara para o campo CEP
 document.getElementById('cep-frete').addEventListener('input', function(e) {
-    // Remove tudo que não for número
     let v = this.value.replace(/\D/g, '');
-    // Limita a 8 dígitos
     if (v.length > 8) v = v.slice(0, 8);
-    // Formata como 00000-000
     if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
     this.value = v;
 });

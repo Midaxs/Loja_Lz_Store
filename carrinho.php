@@ -121,7 +121,7 @@ $total = 0;
                 </div>
             </div>
             <?php if (!empty($carrinho)): ?>
-            <form action="finalizar_compra.php" method="post">
+            <form action="dados.php" method="post">
                 <button class="cart-finalizar" type="submit"><span>🛒</span> FINALIZAR PEDIDO</button>
             </form>
             <?php endif; ?>
