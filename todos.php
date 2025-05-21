@@ -3,20 +3,38 @@ include 'conexao.php';
 
 // Buscar categorias distintas
 $categorias = [];
-$res = $conn->query("SELECT DISTINCT categoria FROM produtos WHERE categoria IS NOT NULL AND categoria != ''");
+$res = $conn->query("SELECT categoria, categorias FROM produtos");
 while ($row = $res->fetch_assoc()) {
-    $categorias[] = $row['categoria'];
+    if (!empty($row['categoria'])) {
+        $categorias[] = trim($row['categoria']);
+    }
+    if (!empty($row['categorias'])) {
+        $cats = json_decode($row['categorias'], true);
+        if (is_array($cats)) {
+            foreach ($cats as $cat) {
+                $categorias[] = trim($cat);
+            }
+        }
+    }
 }
+$categorias = array_unique(array_filter($categorias));
+sort($categorias);
 
 // Filtrar produtos pela categoria selecionada
 $categoria = $_GET['categoria'] ?? '';
 if ($categoria) {
-    $stmt = $conn->prepare("SELECT id, nome, preco, descricao, imagem1, categoria FROM produtos WHERE categoria = ? ORDER BY id DESC");
+    // Busca produtos onde a categoria antiga OU o JSON de categorias contém a categoria selecionada
+    $sql = "SELECT id, nome, preco, descricao, imagem1, categoria, categorias 
+            FROM produtos 
+            WHERE categoria = ? 
+               OR (categorias IS NOT NULL AND categorias != '' AND JSON_CONTAINS(categorias, '\"$categoria\"'))
+            ORDER BY id DESC";
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $categoria);
     $stmt->execute();
     $resultado = $stmt->get_result();
 } else {
-    $resultado = $conn->query("SELECT id, nome, preco, descricao, imagem1, categoria FROM produtos ORDER BY id DESC");
+    $resultado = $conn->query("SELECT id, nome, preco, descricao, imagem1, categoria, categorias FROM produtos ORDER BY id DESC");
 }
 ?>
 
@@ -33,7 +51,7 @@ if ($categoria) {
 <h1>Todos os Produtos</h1>
 
 <form method="get" style="margin-bottom:32px;">
-    <select name="categoria" style="padding:8px;border-radius:4px;border:1px solid #ccc;">
+    <select name="categoria" style="padding:8px;border-radius:4px;border:1px solid #ccc; margin-left: 30px">
         <option value="">Todas as categorias</option>
         <?php foreach ($categorias as $cat): ?>
             <option value="<?= htmlspecialchars($cat) ?>" <?= $cat == $categoria ? 'selected' : '' ?>>
@@ -45,7 +63,7 @@ if ($categoria) {
 </form>
 
 <?php if ($resultado->num_rows > 0): ?>
-    <div style="display:flex;flex-wrap:wrap;gap:32px;">
+    <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;">
     <?php while ($produto = $resultado->fetch_assoc()): ?>
         <div style="background:#fff;border-radius:28px;padding:24px 18px 18px 18px;box-shadow:0 2px 8px #0001;max-width:320px;min-width:260px;display:flex;flex-direction:column;align-items:center;">
             <?php if (!empty($produto['imagem1'])): ?>
@@ -56,8 +74,19 @@ if ($categoria) {
             <div style="margin-top:18px;color:#ff3131;font-size:18px;font-weight:bold;text-align:left;width:100%;"><?= htmlspecialchars($produto['nome']) ?></div>
             <div style="margin-top:12px;font-size:22px;font-weight:bold;color:#111;width:100%;">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></div>
             <div style="color:#222;font-size:15px;margin-top:2px;width:100%;">em 1x R$<?= number_format($produto['preco'], 2, ',', '.') ?></div>
+            <?php
+            $cats = [];
+            if (!empty($produto['categorias'])) {
+                $cats = json_decode($produto['categorias'], true);
+            }
+            ?>
             <div style="font-size:13px;color:#555;margin-top:4px;">
-                Categoria: <?= htmlspecialchars($produto['categoria'] ?? 'Sem categoria') ?>
+                Categorias:
+                <?php if ($cats): ?>
+                    <?= htmlspecialchars(implode(', ', $cats)) ?>
+                <?php else: ?>
+                    <?= htmlspecialchars($produto['categoria'] ?? 'Sem categoria') ?>
+                <?php endif; ?>
             </div>
             <a class="botao" href="produto.php?id=<?= $produto['id'] ?>" style="margin-top:18px;background:#ff3131;color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;">Ver Produto</a>
         </div>

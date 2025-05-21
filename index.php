@@ -23,7 +23,7 @@ if ($usuario_id) {
 }
 
 // Busca todos os produtos
-$sql = "SELECT id, nome, preco, imagem1, categoria FROM produtos ORDER BY id DESC";
+$sql = "SELECT id, nome, preco, imagem1, categoria FROM produtos WHERE quantidade > 0 ORDER BY nome ASC";
 $resultado = $conn->query($sql);
 
 // Recupera produtos já olhados do cookie
@@ -94,101 +94,142 @@ if (isset($_COOKIE['produtos_ja_olhados'])) {
             <?php
             // Pega o produto mais recente olhado
             $ultimo_produto = !empty($produtos_ja_olhados) ? $produtos_ja_olhados[0] : null;
-            $categoria = null;
+            $categorias_sug = [];
             if ($ultimo_produto) {
-                $sql_cat = "SELECT categoria FROM produtos WHERE id = ?";
+                $sql_cat = "SELECT categoria, categorias FROM produtos WHERE id = ?";
                 $stmt_cat = $conn->prepare($sql_cat);
                 $stmt_cat->bind_param("i", $ultimo_produto);
                 $stmt_cat->execute();
                 $res_cat = $stmt_cat->get_result();
                 if ($row_cat = $res_cat->fetch_assoc()) {
-                    $categoria = $row_cat['categoria'];
+                    if (!empty($row_cat['categorias'])) {
+                        $cats = json_decode($row_cat['categorias'], true);
+                        if (is_array($cats)) {
+                            $categorias_sug = $cats;
+                        }
+                    } elseif (!empty($row_cat['categoria'])) {
+                        $categorias_sug[] = $row_cat['categoria'];
+                    }
                 }
             }
-            if ($categoria) {
-                $sql_sug = "SELECT id, nome, preco, imagem1 FROM produtos WHERE categoria = ? AND id != ? ORDER BY RAND() LIMIT 10";
+
+            if (!empty($categorias_sug)) {
+                // Monta a query para sugestões usando JSON_CONTAINS para cada categoria
+                $placeholders = implode(',', array_fill(0, count($categorias_sug), '?'));
+                $where = [];
+                foreach ($categorias_sug as $cat) {
+                    $where[] = "(categoria = ? OR (categorias IS NOT NULL AND categorias != '' AND JSON_CONTAINS(categorias, '\"$cat\"')))";
+
+                }
+                $where_sql = implode(' OR ', $where);
+                $sql_sug = "SELECT id, nome, preco, imagem1 FROM produtos WHERE ($where_sql) AND id != ? ORDER BY RAND() LIMIT 10";
                 $stmt_sug = $conn->prepare($sql_sug);
-                $stmt_sug->bind_param("si", $categoria, $ultimo_produto);
+
+                // Monta os parâmetros dinamicamente
+                $types = str_repeat('s', count($categorias_sug)) . 'i';
+                $params = array_merge($categorias_sug, [$ultimo_produto]);
+                $stmt_sug->bind_param($types, ...$params);
+
                 $stmt_sug->execute();
                 $res_sug = $stmt_sug->get_result();
                 while ($sug = $res_sug->fetch_assoc()):
             ?>
-                <div style="min-width:180px;max-width:200px;background:#fafbfc;border-radius:12px;padding:10px 8px 8px 8px;display:flex;flex-direction:column;align-items:center;">
-                    <?php if (!empty($sug['imagem1'])): ?>
-                        <img src="imgs/produtos/<?= htmlspecialchars($sug['imagem1']) ?>" alt="<?= htmlspecialchars($sug['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
-                    <?php else: ?>
-                        <div style="width:90%;height:80px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
-                    <?php endif; ?>
-                    <div style="margin-top:8px;font-size:15px;font-weight:500;color:#d22;text-align:center;"><?= htmlspecialchars($sug['nome']) ?></div>
-                    <div style="margin-top:4px;font-size:16px;font-weight:bold;color:#111;">R$ <?= number_format($sug['preco'], 2, ',', '.') ?></div>
-                    <a href="produto.php?id=<?= $sug['id'] ?>" style="margin-top:6px;background:#ff3131;color:#fff;padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:12px;">Ver Produto</a>
-                </div>
-            <?php endwhile; } else { ?>
+                    <div style="min-width:180px;max-width:200px;background:#fafbfc;border-radius:12px;padding:10px 8px 8px 8px;display:flex;flex-direction:column;align-items:center;">
+                        <?php if (!empty($sug['imagem1'])): ?>
+                            <img src="imgs/produtos/<?= htmlspecialchars($sug['imagem1']) ?>" alt="<?= htmlspecialchars($sug['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
+                        <?php else: ?>
+                            <div style="width:90%;height:80px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
+                        <?php endif; ?>
+                        <div style="margin-top:8px;font-size:15px;font-weight:500;color:#d22;text-align:center;"><?= htmlspecialchars($sug['nome']) ?></div>
+                        <div style="margin-top:4px;font-size:16px;font-weight:bold;color:#111;">R$ <?= number_format($sug['preco'], 2, ',', '.') ?></div>
+                        <a href="produto.php?id=<?= $sug['id'] ?>" style="margin-top:6px;background:#ff3131;color:#fff;padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:12px;">Ver Produto</a>
+                    </div>
+            <?php
+                endwhile;
+            } else {
+            ?>
                 <div style="color:#888;">Nenhuma sugestão disponível.</div>
             <?php } ?>
         </div>
     </div>
 
-    <!-- 3. Últimos produtos adicionados -->
+    <!-- 3. Novidades (produtos mais recentes) -->
     <div style="background:#fff;border-radius:18px;box-shadow:0 2px 8px #0001;padding:18px 18px 12px 18px;">
-        <div style="font-size:1.3em;font-weight:bold;color:#ff3131;margin-bottom:12px;">Últimos produtos adicionados</div>
-        <div id="ultimos-adicionados-carrossel" style="display:flex;gap:18px;overflow-x:auto;">
+        <div style="font-size:1.3em;font-weight:bold;color:#ff3131;margin-bottom:12px;">Novidades</div>
+        <div id="novidades-carrossel" style="display:flex;gap:18px;overflow-x:auto;">
             <?php
-            $sql_ultimos = "SELECT id, nome, preco, imagem1 FROM produtos ORDER BY id DESC LIMIT 10";
-            $res_ultimos = $conn->query($sql_ultimos);
-            if ($res_ultimos && $res_ultimos->num_rows > 0) {
-                while ($u = $res_ultimos->fetch_assoc()):
+            // Pega os produtos mais recentes cadastrados (últimos 10)
+            $sql_nov = "SELECT id, nome, preco, imagem1 FROM produtos WHERE quantidade > 0 ORDER BY id DESC LIMIT 10";
+            $res_nov = $conn->query($sql_nov);
+            while ($nov = $res_nov->fetch_assoc()):
             ?>
                 <div style="min-width:180px;max-width:200px;background:#fafbfc;border-radius:12px;padding:10px 8px 8px 8px;display:flex;flex-direction:column;align-items:center;">
-                    <?php if (!empty($u['imagem1'])): ?>
-                        <img src="imgs/produtos/<?= htmlspecialchars($u['imagem1']) ?>" alt="<?= htmlspecialchars($u['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
+                    <?php if (!empty($nov['imagem1'])): ?>
+                        <img src="imgs/produtos/<?= htmlspecialchars($nov['imagem1']) ?>" alt="<?= htmlspecialchars($nov['nome']) ?>" style="width:90%;max-width:120px;max-height:80px;object-fit:contain;border-radius:8px;background:#f5f5f5;">
                     <?php else: ?>
                         <div style="width:90%;height:80px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
                     <?php endif; ?>
-                    <div style="margin-top:8px;font-size:15px;font-weight:500;color:#d22;text-align:center;"><?= htmlspecialchars($u['nome']) ?></div>
-                    <div style="margin-top:4px;font-size:16px;font-weight:bold;color:#111;">R$ <?= number_format($u['preco'], 2, ',', '.') ?></div>
-                    <a href="produto.php?id=<?= $u['id'] ?>" style="margin-top:6px;background:#ff3131;color:#fff;padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:12px;">Ver Produto</a>
+                    <div style="margin-top:8px;font-size:15px;font-weight:500;color:#d22;text-align:center;"><?= htmlspecialchars($nov['nome']) ?></div>
+                    <div style="margin-top:4px;font-size:16px;font-weight:bold;color:#111;">R$ <?= number_format($nov['preco'], 2, ',', '.') ?></div>
+                    <a href="produto.php?id=<?= $nov['id'] ?>" style="margin-top:6px;background:#ff3131;color:#fff;padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:12px;">Ver Produto</a>
                 </div>
-            <?php endwhile;
-            } else { ?>
-                <div style="color:#888;">Nenhum produto encontrado.</div>
-            <?php } ?>
+            <?php
+            endwhile;
+            ?>
+        </div>
+    </div>
+
+    <!-- 4. Produtos Disponíveis -->
+    <div style="padding:0; margin-top:32px;">
+        <div class="produtos-disponiveis-titulo">Produtos Disponíveis</div>
+        <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;">
+            <?php
+            $sql_disp = "SELECT id, nome, preco, descricao, imagem1, categoria, categorias FROM produtos WHERE quantidade > 0 ORDER BY nome ASC";
+            $res_disp = $conn->query($sql_disp);
+            if ($res_disp->num_rows > 0):
+                while ($produto = $res_disp->fetch_assoc()):
+            ?>
+                <div style="background:#fff;border-radius:28px;padding:24px 18px 18px 18px;box-shadow:0 2px 8px #0001;max-width:320px;min-width:260px;display:flex;flex-direction:column;align-items:center;">
+                    <?php if (!empty($produto['imagem1'])): ?>
+                        <img src="imgs/produtos/<?= htmlspecialchars($produto['imagem1']) ?>" alt="<?= htmlspecialchars($produto['nome']) ?>" style="width:90%;max-width:260px;max-height:120px;object-fit:contain;border-radius:12px;background:#f5f5f5;">
+                    <?php else: ?>
+                        <div style="width:90%;height:120px;background:#eee;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
+                    <?php endif; ?>
+                    <div style="margin-top:18px;color:#ff3131;font-size:18px;font-weight:bold;text-align:left;width:100%;"><?= htmlspecialchars($produto['nome']) ?></div>
+                    <div style="margin-top:12px;font-size:22px;font-weight:bold;color:#111;width:100%;">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></div>
+                    <div style="color:#222;font-size:15px;margin-top:2px;width:100%;">em 1x R$<?= number_format($produto['preco'], 2, ',', '.') ?></div>
+                    <?php
+                    $cats = [];
+                    if (!empty($produto['categorias'])) {
+                        $cats = json_decode($produto['categorias'], true);
+                    }
+                    ?>
+                    <div class="produto-categorias">
+                        <?php if ($cats): ?>
+                            <?php foreach ($cats as $cat): ?>
+                                <span class="produto-categoria-tag"><?= htmlspecialchars($cat) ?></span>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <span class="produto-categoria-tag"><?= htmlspecialchars($produto['categoria'] ?? 'Sem categoria') ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <a class="botao" href="produto.php?id=<?= $produto['id'] ?>" style="margin-top:18px;background:#ff3131;color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;">Ver Produto</a>
+                </div>
+            <?php
+                endwhile;
+            else:
+            ?>
+                <div style="color:#888;">Nenhum produto disponível.</div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
-<!-- Fim dos cards especiais -->
-
-<!-- Lista de produtos -->
-<div style="display:flex;flex-direction:column;align-items:center;">
-    <h1 style="text-align:center;width:100%;">Produtos Disponíveis</h1>
-
-    <?php if ($resultado->num_rows > 0): ?>
-        <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;">
-        <?php while ($produto = $resultado->fetch_assoc()): ?>
-            <div style="background:#fff;border-radius:28px;padding:24px 18px 18px 18px;box-shadow:0 2px 8px #0001;max-width:320px;min-width:260px;display:flex;flex-direction:column;align-items:center;">
-                <?php if (!empty($produto['imagem1'])): ?>
-                    <img src="imgs/produtos/<?= htmlspecialchars($produto['imagem1']) ?>" alt="<?= htmlspecialchars($produto['nome']) ?>" style="width:90%;max-width:260px;max-height:120px;object-fit:contain;border-radius:12px;background:#f5f5f5;">
-                <?php else: ?>
-                    <div style="width:90%;height:120px;background:#eee;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#aaa;">Sem imagem</div>
-                <?php endif; ?>
-                <div style="margin-top:18px;color:#ff3131;font-size:18px;font-weight:bold;text-align:left;width:100%;"><?= htmlspecialchars($produto['nome']) ?></div>
-                <div style="margin-top:12px;font-size:22px;font-weight:bold;color:#111;width:100%;">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></div>
-                <div style="color:#222;font-size:15px;margin-top:2px;width:100%;">em 1x R$<?= number_format($produto['preco'], 2, ',', '.') ?></div>
-                <div style="font-size:13px;color:#555;margin-top:4px;">
-                    Categoria: <?= htmlspecialchars($produto['categoria'] ?? 'Sem categoria') ?>
-                </div>
-                <a class="botao" href="produto.php?id=<?= $produto['id'] ?>" style="margin-top:18px;background:#ff3131;color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;">Ver Produto</a>
-            </div>
-        <?php endwhile; ?>
-        </div>
-    <?php else: ?>
-        <p>Nenhum produto cadastrado ainda.</p>
-    <?php endif; ?>
-</div>
-
-<br>
 
 <?php include 'header/footer.php'; ?>
 
 </body>
 </html>
+
+<?php
+$conn->close();
+?>

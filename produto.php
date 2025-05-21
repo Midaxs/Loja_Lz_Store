@@ -158,7 +158,9 @@ if ($id_produto > 0 && $usuario_id) {
         <div style="display: flex; align-items: flex-end; gap: 32px; flex-wrap: wrap; margin-bottom: 16px;">
             <div class="produto-frete">
                 <label style="font-weight: bold;">Calcular Frete</label><br>
-                <input type="text" placeholder="00000-000" maxlength="9" class="produto-frete-input">
+                <input type="text" id="cep-frete" placeholder="00000-000" maxlength="9" class="produto-frete-input">
+                <button type="button" onclick="calcularFrete()" style="margin-left:8px;padding:6px 16px;background:#ff3131;color:#fff;border:none;border-radius:6px;font-weight:bold;cursor:pointer;">Calcular</button>
+                <div id="resultado-frete" style="margin-top:8px;color:#222;font-size:15px;"></div>
             </div>
             <div class="produto-compartilhar" style="margin-bottom:0;">
                 <span class="produto-share-icone">&#128257;</span>
@@ -241,4 +243,37 @@ function alterarQtd(delta) {
     if (valor > 10) valor = 10;
     input.value = valor;
 }
+</script>
+<script>
+function calcularFrete() {
+    var cep = document.getElementById('cep-frete').value.replace(/\D/g, '');
+    var resultado = document.getElementById('resultado-frete');
+    if (cep.length !== 8) {
+        resultado.innerHTML = "Digite um CEP válido.";
+        return;
+    }
+    resultado.innerHTML = "Calculando...";
+    fetch('calcula_frete.php?cep=' + cep)
+        .then(r => r.json())
+        .then(data => {
+            if (data.frete) {
+                resultado.innerHTML = "Frete: <b>R$ " + data.frete + "</b><br>Prazo: " + data.prazo + " dias úteis";
+            } else {
+                resultado.innerHTML = data.erro || "Erro ao calcular frete.";
+            }
+        })
+        .catch(() => {
+            resultado.innerHTML = "Erro ao calcular frete.";
+        });
+}
+
+document.getElementById('cep-frete').addEventListener('input', function(e) {
+    // Remove tudo que não for número
+    let v = this.value.replace(/\D/g, '');
+    // Limita a 8 dígitos
+    if (v.length > 8) v = v.slice(0, 8);
+    // Formata como 00000-000
+    if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+    this.value = v;
+});
 </script>

@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
     $preco = $_POST['preco'];
     $quantidade = $_POST['quantidade'];
     $descricao = $_POST['descricao'];
-    $categoria = $_POST['categoria'];
+    // $categoria = $_POST['categoria'];
     $variacoes = isset($_POST['variacoes']) ? $_POST['variacoes'] : [];
     $variacoes_json = json_encode($variacoes);
 
@@ -78,10 +78,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
         }
     }
 
+    // Antes de salvar no banco:
+    $categorias = isset($_POST['categorias']) ? array_map('trim', explode(',', $_POST['categorias'])) : [];
+    $categorias_json = json_encode($categorias);
+
     if (!empty($_POST['produto_id'])) {
         // Atualizar produto existente
         $id = intval($_POST['produto_id']);
-        $sql = "UPDATE produtos SET nome=?, preco=?, quantidade=?, variacoes=?, descricao=?, imagem1=?, imagem2=?, imagem3=?, imagem4=?, imagem5=?, categoria=? WHERE id=?";
+        $sql = "UPDATE produtos SET nome=?, preco=?, quantidade=?, variacoes=?, descricao=?, imagem1=?, imagem2=?, imagem3=?, imagem4=?, imagem5=?, categorias=? WHERE id=?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
             "sdissssssssi",
@@ -95,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
             $imagens[2],
             $imagens[3],
             $imagens[4],
-            $categoria,
+            $categorias_json,
             $id
         );
         if ($stmt->execute()) {
@@ -106,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
         $stmt->close();
     } else {
         // Novo produto
-        $sql = "INSERT INTO produtos (nome, preco, quantidade, variacoes, descricao, imagem1, imagem2, imagem3, imagem4, imagem5, categoria)
+        $sql = "INSERT INTO produtos (nome, preco, quantidade, variacoes, descricao, imagem1, imagem2, imagem3, imagem4, imagem5, categorias)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
@@ -121,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
             $imagens[2],
             $imagens[3],
             $imagens[4],
-            $categoria
+            $categorias_json
         );
         if ($stmt->execute()) {
             $popupMsg = "Produto adicionado com sucesso!";
@@ -183,8 +187,19 @@ $resProdutos = $conn->query("SELECT * FROM produtos ORDER BY id DESC");
         <label>Descrição:</label><br>
         <textarea name="descricao" rows="5" cols="40" maxlength="1000"><?= htmlspecialchars($produtoEdit['descricao'] ?? '') ?></textarea><br><br>
 
-        <label for="categoria">Categoria:</label>
-        <input type="text" name="categoria" id="categoria" value="<?= htmlspecialchars($produtoEdit['categoria'] ?? '') ?>" required><br><br>
+        <label for="categoria">Categorias (separe por vírgula):</label>
+        <input type="text" name="categorias" id="categoria"
+            value="<?php
+                if (!empty($produtoEdit['categorias'])) {
+                    $cats = is_array($produtoEdit['categorias'])
+                        ? $produtoEdit['categorias']
+                        : json_decode($produtoEdit['categorias'], true);
+                    echo htmlspecialchars(implode(', ', $cats));
+                } elseif (!empty($produtoEdit['categoria'])) {
+                    echo htmlspecialchars($produtoEdit['categoria']);
+                }
+            ?>"
+            required><br><br>
 
         <button type="submit" name="salvar_produto"><?= $produtoEdit ? "Salvar Alterações" : "Salvar Produto" ?></button>
         <?php if ($produtoEdit): ?>
@@ -231,7 +246,19 @@ window.onload = function() {
             <tr>
                 <td><?= $p['id'] ?></td>
                 <td><?= htmlspecialchars($p['nome']) ?></td>
-                <td><?= htmlspecialchars($p['categoria']) ?></td>
+                <td>
+                    <?php
+                    $cats = [];
+                    if (!empty($p['categorias'])) {
+                        $cats = json_decode($p['categorias'], true);
+                    }
+                    ?>
+                    <?php if ($cats): ?>
+                        <?= htmlspecialchars(implode(', ', $cats)) ?>
+                    <?php else: ?>
+                        <?= htmlspecialchars($p['categoria'] ?? 'Sem categoria') ?>
+                    <?php endif; ?>
+                </td>
                 <td>R$ <?= number_format($p['preco'], 2, ',', '.') ?></td>
                 <td><?= $p['quantidade'] ?></td>
                 <td>
