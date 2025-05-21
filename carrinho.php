@@ -19,7 +19,7 @@ $total = 0;
 <?php include 'header/header.php'; ?>
 
 <div class="cart-main">
-    <a href="../pagina_prin/index.php" class="cart-back">&lt;voltar para a Página inicial</a>
+    <a href="index.php" class="cart-back">&lt;voltar para a Página inicial</a>
     <div class="cart-title">
         <span class="cart-icon">🛒</span>
         <h1>MEU CARRINHO</h1>

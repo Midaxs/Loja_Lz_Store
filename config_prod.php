@@ -33,7 +33,7 @@ if (isset($_GET['apagar'])) {
     if ($row = $res->fetch_assoc()) {
         for ($i = 1; $i <= 5; $i++) {
             if (!empty($row["imagem$i"])) {
-                @unlink("../../imagens/produtos/" . $row["imagem$i"]);
+                @unlink("imgs/produtos/" . $row["imagem$i"]);
             }
         }
     }
@@ -160,7 +160,7 @@ $resProdutos = $conn->query("SELECT * FROM produtos ORDER BY id DESC");
         <?php for ($i = 0; $i < 5; $i++): ?>
             <?php if (!empty($produtoEdit["imagem".($i+1)])): ?>
                 <div>
-                    <img src="../../imagens/produtos/<?= htmlspecialchars($produtoEdit["imagem".($i+1)]) ?>" style="max-width:80px;max-height:60px;border-radius:6px;background:#eee;">
+                    <img src="imgs/produtos/<?= htmlspecialchars($produtoEdit["imagem".($i+1)]) ?>" style="max-width:80px;max-height:60px;border-radius:6px;background:#eee;">
                     <input type="hidden" name="imagem_existente_<?= $i ?>" value="<?= htmlspecialchars($produtoEdit["imagem".($i+1)]) ?>">
                 </div>
             <?php endif; ?>
@@ -230,7 +230,7 @@ function adicionarVariacao() {
                 <td>
                     <?php for ($i = 1; $i <= 5; $i++): ?>
                         <?php if (!empty($p["imagem$i"])): ?>
-                            <img class="img-produto" src="../../imagens/produtos/<?= htmlspecialchars($p["imagem$i"]) ?>" style="max-width:40px;max-height:30px;margin-right:2px;">
+                            <img class="img-produto" src="imgs/produtos/<?= htmlspecialchars($p["imagem$i"]) ?>" style="max-width:40px;max-height:30px;margin-right:2px;">
                         <?php endif; ?>
                     <?php endfor; ?>
                 </td>
