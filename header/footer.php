@@ -18,4 +18,43 @@
         </div>
     </div>
 </footer>
+
+<!-- Chatbot Button -->
+<button id="chatbot-btn" style="
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #ffa800;
+    border: none;
+    box-shadow: 0 2px 8px #0003;
+    z-index: 10001;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/topic.png" alt="Chat" style="width:32px;height:32px;">
+</button>
+
+<!-- Chatbot Iframe (escondido por padrão) -->
+<iframe 
+    src="http://localhost:5000/" 
+    id="chatbot-iframe"
+    style="display:none; position: fixed; bottom: 100px; right: 28px; width: 340px; height: 460px; border: none; border-radius: 16px; box-shadow: 0 4px 16px #0005; z-index: 10000; background: transparent;">
+</iframe>
+
+<script>
+const btn = document.getElementById('chatbot-btn');
+const iframe = document.getElementById('chatbot-iframe');
+let chatOpen = false;
+
+btn.onclick = function() {
+    chatOpen = !chatOpen;
+    iframe.style.display = chatOpen ? 'block' : 'none';
+};
+</script>
 </body>
+</html>
