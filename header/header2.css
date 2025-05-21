@@ -1,0 +1,27 @@
+body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+
+header {
+        background-color: #000000;
+        color: white;
+    }
+    
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+         
+    }
+    
+    .logo {
+        background-image: url('../imgs/icons/lz_logo1.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 60px; 
+    height: 60px; 
+    margin-left: 50px;
+    }

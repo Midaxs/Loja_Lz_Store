@@ -50,9 +50,9 @@ if (isset($_COOKIE['produtos_ja_olhados'])) {
 
 <!-- Banner Carrossel -->
 <div id="banner-carrossel" style="max-width:1300px;margin:32px auto 40px auto;position:relative;">
-    <img class="banner-slide" src="banners/banner1.jpg" style="width:100%;border-radius:24px;display:block;">
-    <img class="banner-slide" src="banners/banner2.png" style="width:100%;border-radius:24px;display:none;">
-    <img class="banner-slide" src="banners/banner3.jpg" style="width:100%;border-radius:24px;display:none;">
+    <img class="banner-slide" src="imgs/banners/banner1.png" style="width:100%;border-radius:24px;display:block;">
+    <img class="banner-slide" src="imgs/banners/banner2.png" style="width:100%;border-radius:24px;display:none;">
+    <img class="banner-slide" src="imgs/banners/banner3.jpg" style="width:100%;border-radius:24px;display:none;">
     <button id="banner-prev" style="position:absolute;top:50%;left:16px;transform:translateY(-50%);background:#fff8;border:none;border-radius:50%;width:36px;height:36px;font-size:22px;cursor:pointer;">&#8592;</button>
     <button id="banner-next" style="position:absolute;top:50%;right:16px;transform:translateY(-50%);background:#fff8;border:none;border-radius:50%;width:36px;height:36px;font-size:22px;cursor:pointer;">&#8594;</button>
 </div>
@@ -189,5 +189,6 @@ if (isset($_COOKIE['produtos_ja_olhados'])) {
 <br>
 
 <?php include 'header/footer.php'; ?>
+<script src="header/header.js"></script>
 </body>
 </html>

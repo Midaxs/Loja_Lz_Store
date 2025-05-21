@@ -1,13 +1,13 @@
-<head>
-        <link rel='stylesheet' type='text/css' media='screen' href='header/footer.css'>
+<link rel='stylesheet' type='text/css' media='screen' href='header/footer.css'>
 
-</head>
 <body>
     
 <footer class="footer-lz">
     <div class="footer-container">
         <div class="footer-logo">
-            <img src="../../imagens/icones/logo_footer2.png" alt="LZ Store Logo">
+            <a href="index.php">
+                <img src="imgs/icons/logo_lz2.png" alt="LZ Store Logo">
+            </a>
         </div>
         <div class="footer-info">
             <h2>| LZ STORE® VAREJO DE PRODUTOS LTDA |<br>

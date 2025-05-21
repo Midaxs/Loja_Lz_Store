@@ -1,0 +1,149 @@
+/* Cores principais: #ff3131 (vermelho), #000 (preto), #fff (branco), #eee (cinza claro) */
+
+body {
+    background: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header2 {
+    width: 100%;
+    background: #ff3131;
+    color: #fff;
+    padding: 18px 0 14px 0;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px #0001;
+}
+
+footer {
+    width: 100%;
+    background: #222;
+    color: #fff;
+    text-align: center;
+    padding: 18px 0 12px 0;
+    font-size: 1em;
+    margin-top: 40px;
+    letter-spacing: 1px;
+}
+
+h1, h2 {
+    color: #ff3131;
+    text-align: center;
+    margin-top: 24px;
+    margin-bottom: 18px;
+    font-weight: bold;
+}
+
+div[style*="background:#fff;"][style*="padding:24px;"] {
+    box-shadow: 0 2px 8px #0001;
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #000;
+    border-radius: 24px;
+    font-size: 16px;
+    background: #fff;
+    margin-bottom: 0;
+    transition: border 0.2s;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #ff3131;
+}
+
+button[type="submit"], button, .botao {
+    background: #ff3131;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    font-size: 17px;
+    font-weight: bold;
+    padding: 12px 0;
+    cursor: pointer;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    transition: background 0.2s;
+    width: 100%;
+}
+
+button[type="submit"]:hover, button:hover, .botao:hover {
+    background: #d81b1b;
+}
+
+a {
+    color: #ff3131;
+    text-decoration: underline;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #d81b1b;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 32px;
+}
+
+th, td {
+    padding: 10px 8px;
+    text-align: center;
+}
+
+th {
+    background: #eee;
+    color: #222;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background: #fafbfc;
+}
+
+tr:hover {
+    background: #ffeaea;
+}
+
+.img-produto {
+    border-radius: 6px;
+    background: #eee;
+}
+
+@media (max-width: 900px) {
+    .header2, footer {
+        font-size: 1.1em;
+        padding: 12px 0;
+    }
+    div[style*="background:#fff;"][style*="padding:24px;"] {
+        max-width: 98vw !important;
+        padding: 12px !important;
+    }
+    table {
+        font-size: 13px;
+    }
+}

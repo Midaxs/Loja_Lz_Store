@@ -17,7 +17,7 @@ body {
     }
     
     .logo {
-        background-image: url('../imagens/icones/logo_v2-sf.png');
+        background-image: url('../imgs/icons/lz_logo1.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -47,7 +47,7 @@ body {
     
     .cart {
         color: black;
-        background-image: url('../imagens/icones/carrinho_fundo2.png');
+        background-image: url('../imgs/icons/carrinho_h.png');
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
@@ -104,7 +104,7 @@ body {
       gap: 15px;
     }
     .minha-conta_img {
-        background-image: url('../imagens/icones/login_img40.png');
+        background-image: url('../imgs/icons/login_img40.png');
     width: 40px;
     height: 40px;
     }
@@ -156,7 +156,7 @@ body {
     color: #fff;
     cursor: pointer;
     font-size: 18px;
-    background-image: url("../imagens/icones/Arrow_Right_MD.svg");
+    background-image: url("../imgs/icons/Arrow_Right_MD.svg");
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -278,4 +278,34 @@ body {
     margin-left: 12px;
     cursor: pointer;
     font-size: 18px;
+}
+#menu-categorias {
+    position: absolute;
+    top: 100%; /* logo abaixo do botão */
+    left: 0;
+    background: #fff;
+    color: #111;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #0002;
+    padding: 18px 24px;
+    z-index: 100;
+    min-width: 180px;
+    margin-left: 326px;
+
+}
+#menu-categorias ul {
+    margin: 0;
+    padding: 0;
+}
+#menu-categorias li {
+    margin-bottom: 10px;
+    list-style: none;
+}
+#menu-categorias li:last-child {
+    margin-bottom: 0;
+}
+#menu-categorias a {
+    color: #111;
+    text-decoration: none;
+    font-weight: bold;
 }

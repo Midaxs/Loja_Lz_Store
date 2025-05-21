@@ -1,0 +1,140 @@
+body {
+    background: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    gap: 60px;
+}
+.login-left, .login-right {
+    background: #fff;
+    border-radius: 0;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+    min-width: 300px;
+}
+.login-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+}
+.user-lock {
+    background: #ff3131 url('data:image/svg+xml;utf8,<svg fill="white" viewBox="0 0 24 24" width="38" height="38" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="4"/><path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4zm3 4h-6v-1c0-1.104.896-2 2-2h2c1.104 0 2 .896 2 2v1z"/></svg>') no-repeat center/60%;
+}
+.user {
+    background: #ff3131 url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="20" r="12" fill="white"/><ellipse cx="30" cy="42" rx="18" ry="10" fill="white"/><circle cx="48" cy="48" r="10" fill="white"/><rect x="47" y="43" width="2" height="10" fill="%23ff3131"/><rect x="43" y="47" width="10" height="2" fill="%23ff3131"/></svg>') no-repeat center/60%;
+}
+.login-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    text-align: center;
+}
+.login-desc {
+    font-size: 15px;
+    color: #222;
+    margin-bottom: 18px;
+    text-align: center;
+}
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.login-form input[type="email"],
+.login-form input[type="password"],
+.login-form input[type="text"] {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #000;
+    border-radius: 28px;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 0;
+    background: #fff;
+    transition: border 0.2s;
+}
+.login-form input:focus {
+    border-color: #ff3131;
+}
+.login-btn {
+    width: 100%;
+    padding: 12px 0;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    transition: background 0.2s;
+}
+.login-btn:hover {
+    background: #222;
+}
+.login-link {
+    color: #bbb;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 2px;
+    display: block;
+}
+.cadastro-btn {
+    width: 100%;
+    padding: 14px 0;
+    background: #ff3131;
+    color: #fff;
+    border: none;
+    border-radius: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    transition: background 0.2s;
+    display: block;
+}
+.cadastro-btn:hover {
+    background: #d81b1b;
+}
+.login-erro {
+    color: #ff3131;
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-align: center;
+}
+/* Especifico para o formulário de recuperação de senha */
+.esqueci-form input[type="email"] {
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+@media (max-width: 900px) {
+    .login-container {
+        flex-direction: column;
+        gap: 24px;
+    }
+    .login-left, .login-right {
+        width: 90vw;
+        min-width: unset;
+    }
+}
