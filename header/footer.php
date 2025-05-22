@@ -41,7 +41,7 @@
 
 <!-- Chatbot Iframe (escondido por padrão) -->
 <iframe 
-    src="http://localhost:5000/" 
+    src="/Loja/Loja_Lz_Store/Chatb/teste.php" 
     id="chatbot-iframe"
     style="display:none; position: fixed; bottom: 100px; right: 28px; width: 340px; height: 460px; border: none; border-radius: 16px; box-shadow: 0 4px 16px #0005; z-index: 10000; background: transparent;">
 </iframe>
@@ -58,12 +58,12 @@ btn.onclick = function() {
 </script>
 
 <!-- Exemplo: dentro do <body> ou no final do arquivo cliente.html ou atendente.html -->
-<script>
-fetch('http://localhost:5000/chat', {
+<!-- <script>
+fetch('https://ec817168-cf03-4f58-bb62-21e335356964-00-4hn7vcyu6dgu.worf.replit.dev/chat', {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
   body: JSON.stringify({ message: 'Olá' })
 });
-</script>
+</script> -->
 </body>
 </html>

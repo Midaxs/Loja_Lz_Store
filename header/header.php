@@ -39,14 +39,14 @@ if (isset($_SESSION['usuario_id'])) {
                             <div class="usuario-dropdown">
                                 <span class="usuario-nome"><?= htmlspecialchars($_SESSION['usuario_nome']) ?></span>
                                 <div class="dropdown-logout">
-                                    <form action="logout.php" method="post">
+                                    <form id="logout-form" action="logout.php" method="post">
                                         <button type="submit" class="btn-sair">SAIR</button>
                                     </form>
                                     <?php if ($isAdmin): ?>
                                         <a href="config_prod.php" class="btn-config-prod">Configuração de produto</a>
                                     <?php endif; ?>
                                     <?php if ($isAtendimento): ?>
-                                        <a href="http://localhost:5000/atendente" class="btn-atendimento">Atendimento</a>
+                                        <a href="../Loja_Lz_Store/Chatb/atendente.php" class="btn-atendimento">Atendimento</a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -87,3 +87,13 @@ if (isset($_SESSION['usuario_id'])) {
         </nav>
     </div>
 </header>
+<script>
+document.getElementById('logout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    fetch('https://ec817168-cf03-4f58-bb62-21e335356964-00-4hn7vcyu6dgu.worf.replit.dev/resetar', {
+        method: 'POST'
+    }).then(() => {
+        e.target.submit();
+    });
+});
+</script>
