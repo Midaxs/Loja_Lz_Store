@@ -227,6 +227,53 @@ if (isset($_COOKIE['produtos_ja_olhados'])) {
 
 <?php include 'header/footer.php'; ?>
 
+<script>
+// filepath: c:\xampp\htdocs\Loja\Loja_Lz_Store\index.php
+const slides = document.querySelectorAll('.banner-slide');
+const prevBtn = document.getElementById('banner-prev');
+const nextBtn = document.getElementById('banner-next');
+let currentSlide = 0;
+let bannerInterval;
+
+function showSlide(idx) {
+    slides.forEach((slide, i) => {
+        slide.style.display = i === idx ? 'block' : 'none';
+    });
+    currentSlide = idx;
+}
+
+function nextSlide() {
+    let idx = (currentSlide + 1) % slides.length;
+    showSlide(idx);
+}
+
+function prevSlide() {
+    let idx = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(idx);
+}
+
+function startBannerAuto() {
+    bannerInterval = setInterval(nextSlide, 5000); // 10 segundos
+}
+
+function resetBannerAuto() {
+    clearInterval(bannerInterval);
+    startBannerAuto();
+}
+
+prevBtn.addEventListener('click', () => {
+    prevSlide();
+    resetBannerAuto();
+});
+nextBtn.addEventListener('click', () => {
+    nextSlide();
+    resetBannerAuto();
+});
+
+showSlide(0);
+startBannerAuto();
+</script>
+
 </body>
 </html>
 

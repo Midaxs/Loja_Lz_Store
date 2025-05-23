@@ -27,7 +27,7 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: #ffa800;
+    background: red;
     border: none;
     box-shadow: 0 2px 8px #0003;
     z-index: 10001;
