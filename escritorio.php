@@ -2,66 +2,31 @@
 include 'conexao.php';
 $conn->set_charset('utf8mb4');
 
-// Buscar categorias distintas
-$categorias = [];
-$res = $conn->query("SELECT categoria, categorias FROM produtos");
-while ($row = $res->fetch_assoc()) {
-    if (!empty($row['categoria'])) {
-        $categorias[] = trim($row['categoria']);
-    }
-    if (!empty($row['categorias'])) {
-        $cats = json_decode($row['categorias'], true);
-        if (is_array($cats)) {
-            foreach ($cats as $cat) {
-                $categorias[] = trim($cat);
-            }
-        }
-    }
-}
-$categorias = array_unique(array_filter($categorias));
-sort($categorias);
+$categoria = 'escritório';
 
-// Filtrar produtos pela categoria selecionada
-$categoria = $_GET['categoria'] ?? '';
-if ($categoria) {
-    // Busca produtos onde a categoria antiga OU o JSON de categorias contém a categoria selecionada
-    $sql = "SELECT id, nome, preco, descricao, imagem1, categoria, categorias 
-            FROM produtos 
-            WHERE categoria COLLATE utf8mb4_unicode_ci = ? 
-               OR JSON_CONTAINS(categorias, JSON_QUOTE(?))
-            ORDER BY id DESC";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $categoria, $categoria);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-} else {
-    $resultado = $conn->query("SELECT id, nome, preco, descricao, imagem1, categoria, categorias FROM produtos ORDER BY id DESC");
-}
+// Busca produtos onde a categoria antiga OU o JSON de categorias contém "Pc Gamer"
+$sql = "SELECT id, nome, preco, descricao, imagem1, categoria, categorias 
+        FROM produtos 
+        WHERE categoria COLLATE utf8mb4_unicode_ci = ? 
+           OR JSON_CONTAINS(categorias, JSON_QUOTE(?))
+        ORDER BY id DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $categoria, $categoria);
+$stmt->execute();
+$resultado = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
-    <title>Todos os Produtos</title>
+    <title>Escritório - Produtos</title>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
 </head>
 <body>
 <?php include 'header/header.php'; ?>
 
-<h1>Todos os Produtos</h1>
-
-<form method="get" style="margin-bottom:32px;">
-    <select name="categoria" style="padding:8px;border-radius:4px;border:1px solid #ccc; margin-left: 30px">
-        <option value="">Todas as categorias</option>
-        <?php foreach ($categorias as $cat): ?>
-            <option value="<?= htmlspecialchars($cat) ?>" <?= $cat == $categoria ? 'selected' : '' ?>>
-                <?= htmlspecialchars($cat) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-    <button type="submit" style="padding:8px 16px;border:none;border-radius:4px;background:#ff3131;color:#fff;font-weight:bold;cursor:pointer;">Filtrar</button>
-</form>
+<h1>Itens de Escritório</h1>
 
 <?php if ($resultado->num_rows > 0): ?>
     <div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;">
@@ -94,7 +59,7 @@ if ($categoria) {
     <?php endwhile; ?>
     </div>
 <?php else: ?>
-    <p>Nenhum produto encontrado.</p>
+    <p>Nenhum produto encontrado na categoria Pc Gamer.</p>
 <?php endif; ?>
 
 <?php include 'header/footer.php'; ?>

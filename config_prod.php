@@ -37,6 +37,11 @@ if (isset($_GET['apagar'])) {
             }
         }
     }
+    // Apaga referências em carrinhos
+    $conn->query("DELETE FROM carrinhos WHERE produto_id = $id");
+    // Apaga referências em produtos_olhados
+    $conn->query("DELETE FROM produtos_olhados WHERE produto_id = $id");
+    // Agora pode apagar o produto
     $conn->query("DELETE FROM produtos WHERE id = $id");
     echo "<p style='color:green;'>Produto apagado!</p>";
 }
@@ -64,9 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['salvar_produto'])) {
 
     // ADICIONE ESTA PARTE:
     $peso = $_POST['peso'];
-    $comprimento = $_POST['comprimento'];
-    $altura = $_POST['altura'];
-    $largura = $_POST['largura'];
+    $comprimento = $_POST['comprimento'] !== '' ? $_POST['comprimento'] : null;
+    $altura = $_POST['altura'] !== '' ? $_POST['altura'] : null;
+    $largura = $_POST['largura'] !== '' ? $_POST['largura'] : null;
     $cep_origem = $_POST['cep_origem'];
 
     // Salvar imagens
@@ -169,7 +174,7 @@ $resProdutos = $conn->query("SELECT * FROM produtos ORDER BY id DESC");
             <input type="hidden" name="produto_id" value="<?= intval($produtoEdit['id']) ?>">
         <?php endif; ?>
         <label>Nome do Produto:</label><br>
-        <input type="text" name="nome" maxlength="50" required value="<?= htmlspecialchars($produtoEdit['nome'] ?? '') ?>"><br><br>
+        <input type="text" name="nome" maxlength="199" required value="<?= htmlspecialchars($produtoEdit['nome'] ?? '') ?>"><br><br>
 
         <label>Preço:</label><br>
         <input type="number" name="preco" step="0.01" required value="<?= htmlspecialchars($produtoEdit['preco'] ?? '') ?>"><br><br>
@@ -217,7 +222,7 @@ $resProdutos = $conn->query("SELECT * FROM produtos ORDER BY id DESC");
         <button type="button" onclick="adicionarVariacao()">Adicionar Variação</button><br><br>
 
         <label>Descrição:</label><br>
-        <textarea name="descricao" rows="5" cols="40" maxlength="1000"><?= htmlspecialchars($produtoEdit['descricao'] ?? '') ?></textarea><br><br>
+        <textarea name="descricao" rows="5" cols="40" maxlength="5000"><?= htmlspecialchars($produtoEdit['descricao'] ?? '') ?></textarea><br><br>
 
         <label for="categoria">Categorias (separe por vírgula):</label>
         <input type="text" name="categorias" id="categoria"

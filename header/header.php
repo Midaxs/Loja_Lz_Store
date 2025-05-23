@@ -77,23 +77,13 @@ if (isset($_SESSION['usuario_id'])) {
             <ul>
                 <li><a href="todos.php">Todos</a></li>
                 <li><a href="#">Mais vendido</a></li>
-                <li><a href="#">Casa</a></li>
-                <li><a href="#">Cozinha</a></li>
+                <li><a href="pc.php">Pcs</a></li>
+                <li><a href="#">Periféricos</a></li>
                 <li><a href="#">Eletrônicos</a></li>
-                <li><a href="#">Beleza</a></li>
-                <li><a href="#">Moda</a></li>
-                <li><a href="#">Esportes</a></li>
+                <li><a href="hardware.php">Hardware</a></li>
+                <li><a href="escritorio.php">Escritório</a></li>
+                <li><a href="videogame.php">Videogames</a></li>
             </ul>
         </nav>
     </div>
 </header>
-<script>
-document.getElementById('logout-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    fetch('https://ec817168-cf03-4f58-bb62-21e335356964-00-4hn7vcyu6dgu.worf.replit.dev/resetar', {
-        method: 'POST'
-    }).then(() => {
-        e.target.submit();
-    });
-});
-</script>

@@ -9,7 +9,7 @@ session_start();
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; background: #202020;}
         #chat-card { background: #222; border-radius: 22px; align-items: center; }
-        #janela-chat { width: auto; height: 460px; background: #111; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 6px 20px rgba(0,0,0,0.6); overflow: hidden;  }
+        #janela-chat { width: auto; height: 460px; background: #111; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 6px 20px rgba(0,0,0,0.6); overflow: hidden;  margin: 30px; }
         #chat-mensagens { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #000; }
         .mensagem { display: flex; flex-direction: column; max-width: 100%; }
         .autor { font-size: 10px; color: #aaa; margin-bottom: 2px; }
@@ -22,6 +22,14 @@ session_start();
     </style>
 </head>
 <body>
+    <?php
+        if (!file_exists('headerC.php')) {
+            echo '<div style="color:red">Arquivo header2.php não encontrado!</div>';
+        } else {
+            include 'headerC.php';
+        }
+    ?>
+
     <div class="chat-card" id="chat-card">
         <div id="janela-chat">
             <div id="chat-mensagens"></div>
